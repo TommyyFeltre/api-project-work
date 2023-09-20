@@ -1,56 +1,72 @@
-# Simulazione esercitazione 2023
+Project Work Gestione Conti Correnti
+Creare una applicazione in grado di gestire dei conti correnti. 
+Struttura del database (il tipo di database è a scelta):
+TContiCorrenti (decidere i tipi di dati)
+ContoCorrenteID		
+Email				 
+Password			
+CognomeTitolare		
+NomeTitolare			
+DataApertura			
+IBAN				
+TMovimentiContoCorrente (decidere i tipi di dati)
+MovimentoID			
+ContoCorrenteID		
+Data				
+Importo			
+Saldo				
+CategoriaMovimentoID		
+DescrizioneEstesa		
 
-## API server
-A partire dalla struttura di questa repo andare a sviluppare le api necessarie a soddisfare le specifiche del file `sim-todo.yaml` (aprire il file con [swagger editor](https://editor.swagger.io/)).
-
-### Descrizione
-- L'app gestisce liste di todo associate agli utenti
-- Ogni todo è automaticamente collegato alla persona che l'ha creato
-- Ogni todo può essere assegnato ad un'altra persona al momento della creazione o in seguito tramite una apposita API
-- Ogni todo può avere una data di scadenza
-- Se passata la data di scadenza un todo non è ancora stato completato la proprietà `expired` viene tornata a true
-- Ogni utente vede solo i todo creati o assegnati a lui
-- Di default la lista dei todo non torna quelli già completati, c'è un queryparam per includerli
-- I todo vengono segnati come completati o non completati tramite apposite api
-- Al momento della creazione un todo è non completato
-- L'app fornisce una api per tornare la lista degli utenti registrati, utile per assegnare i todo
-
-### Indicazioni
-- Tutte le api ad eccezione di quelle di autenticazione sono protette tramite token JWT
-- Non salvare più dati del necessario nelle collezioni, utilizzare `virtual` e `ref` quando possibile
-- Fare attenzione ai queryparam, di default vengono mandati come stringa
-- La repo ha già una serie di dipendenze dichiarate (penso tutte quelle che vi serviranno)
-- Leggere bene le definizioni delle api tramite swagger, contengono campi required, condizioni di errore e descrizioni sul comportamento.
-- Non abbiate paura di fare copia incolla dal codice scritto a lezione, possibilmente prima accertatevi di averlo capito. Diverso è fare copia incolla da un compagno, non è apprezzato.
+TCategorieMovimenti  (decidere i tipi di dati)
+CategoriaMovimentoID		
+NomeCategoria			
+Tipologia 			 
+Caricare delle CategorieMovimenti (Apertura Conto, Bonifico Entrata, Bonifico Uscita, Prelievo contanti, Pagamento Utenze, Ricarica, Versamento Bancomat etc…). Ogni Categoria deve avere la tipologia corretta (“Entrata” o “Uscita”)
 
 
-## APP Angular
-Questa va generata usando angular cli, niente codice di partenza. Tutti i passaggi iniziali sono coperti dalla documentazione del corso, in particolare come impostare il proxy per fare le richieste al server.
+L’applicazione è strutturata in 3 parti:
+WebApi in grado di gestire tutte le chiamate richieste (può essere pubblicata online oppure in locale). La tecnologia/linguaggio della WebApi è a scelta.
+Frontend web basato su Angular (online o in locale). Chi vuole può usare un altro framework.
+Applicazione mobile basata su MAUI (online oppure in locale con emulatore di windows)
+Funzionalità/Pagine richieste sia nella applicazione Web che nella applicazione Mobile:
+Funzionalità di Registrazione
+L’utente deve compilare Email, Password, ConfermaPassword, NomeTitolare, CognomeTitolare.
+Prevedere un controllo lato client:
+Obbligo di caricamento di tutti i dati
+validità formale della mail
+Password almeno 8 caratteri, una maiuscola e un simbolo 
+Password uguale a conferma password
+Lato WebApi: rifare le verifiche lato client e verificare che la email non sia già esistente. Se la mail non esiste: Inserire il record in TContiCorrenti. (non è necessario implementare l’invio della mail di conferma registrazione).  Una volta effettuata la registrazione inserire in automatico nel relativo conto corrente un movimento di apertura con tutti gli importi a zero (sia importo che saldo)
+La password deve essere salvata su db in formato criptato
+L’IBAN verrà caricato a mano successivamente dopo la registrazione dell’utente (anche se nella applicazioni reali viene generato automaticamente)
+Per poter continuare con il project work caricare manualmente almeno 10 Movimenti per due  conti correnti di test: il primo movimento deve avere come Descrizione Estesa “ Apertura Conto” e poi caricare gli altri movimenti (sia di Entrata che di Uscita). Attenzione che in ogni movimento va caricato il saldo finale (in base al saldo precedente). La descrizione estesa per esempio è “Bonifico disposto a favore di….” Oppure “ Addebito diretto a favore di…” oppure “Bonifico disposto da…”. 
+Funzionalità di login
+Inserimento di Email e Password 
+Se dopo 30 secondi non si preme il pulsante “login” il form viene resettato e si comunica che si è impiegato troppo tempo a fare login
+Se il login è valido si viene reinviati ad una home page web (e mobile) dove viene visualizzato: Benvenuto Mario Rossi, il saldo del conto corrente e una tabella con gli ultimi 5 movimenti. 
+Nella tabella con gli ultimi 5 movimenti deve essere presente un pulsante o link  “Dettagli” che permette di accedere alla pagina web (e mobile)  DettaglioMovimento dove verrà  visualizzato il dettaglio del movimento selezionato (tutti i campi della TMovimentiContoCorrente)
+Per ogni accesso memorizzare in una Tabella  l’indirizzo IP, data/ora e se l’accesso è valido oppure no.
+Funzionalità di RicercaMovimenti1
+Deve essere possibile visualizzare gli ultimi n movimenti (n deciso dall’utente) e deve visualizzare il saldo finale del conto corrente. I movimenti verranno visualizzati in una tabella in ordine decrescente di Data (Data, Importo, NomeCategoria).  
+Possibilità di esportazione dei movimenti in formato excel oppure csv (è sufficiente uno dei due)
+Funzionalità di RicercaMovimenti2
+Deve essere possibile visualizzare  gli ultimi n movimenti (n deciso dall’utente)  di una certa CategoriaMovimenti scelta dall’utente. Non visualizza il saldo finale. I movimenti verranno visualizzati in una tabella in ordine decrescente di Data (Data, Importo, NomeCategoria).  
+Possibilità di esportazione dei movimenti in formato excel oppure csv (è sufficiente uno dei due)
+Funzionalità di RicercaMovimenti3: 
+Deve essere possibile visualizzare  gli ultimi n movimenti (n deciso dall’utente)  tra due date (scelte dall’utente) . Non visualizza il saldo finale.  I movimenti verranno visualizzati in una tabella  in ordine decrescente di Data (Data, Importo, NomeCategoria).  
+Possibilità di esportazione dei movimenti in formato excel oppure csv (è sufficiente uno dei due)
+Ricarica di un cellulare:
+L’utente deve inserire: numero telefonico, operatore (iliad, tim, vodafone etc..) e del taglio della ricarica tramite (5,10,20,30 euro etc..). La procedura andrà ad inserire un nuovo record in TMovimenti col relativo saldo aggiornato.
+Va prima verificato che ci sia saldo disponibile
+Memorizzare in una Tabella  l’indirizzo IP, data/ora e se l’operazione è andata a buon fine o meno.
+Bonifico da un conto corrente ad un altro conto corrente della stessa applicazione
+Procedura per l’inserimento dell’IBAN del destinatario e importo bonifico
+Va verificato che l’IBAN sia presente in TContiCorrenti
+Va verificato che ci sia saldo disponibile
+Memorizzare in una Tabella  l’indirizzo IP, data/ora e se l’operazione è andata a buon fine o meno.
+Modifica Password (ovviamente possibile solo se l’utente è loggato). Memorizzare in una Tabella  l’indirizzo IP, data/ora e se l’operazione è andata a buon fine o meno. 
+“Profilo” dove vengono visualizzati tutti i dati della  TContiCorrenti (a parte ovviamente la password)
+Tutte le varie pagine saranno accessibili tramite un menu (dopo il login) 
 
-L'app si comporra di sole due pagine
-- login
-- lista dei todo
 
-### Descrizione
-- Installare e utilizzare ngboostrap e i suoi componenti (documentazione del corso)
-- Aggiungere la navbar alla pagina con l'utente loggato e il logout (come fatto in classe)
-- Alla lista dei todo si accede solo previa autenticazione
-- Sopra la lista dei todo c'è una checkbox che se spuntata chiama l'API in modo da tornare anche i todo completati
-- Sopra la lista dei todo è presente un pulsante di aggiunta che apre un [modal](https://ng-bootstrap.github.io/#/components/modal/examples), il modal presenta il form di creazione del todo e la lista degli utenti a cui è possibile assegnarlo (l'assegnazione è opzionale).
-- Per gestire la selezione della dueDate usare [datepicker](https://ng-bootstrap.github.io/#/components/datepicker/overview)
-- Ogni elemento della lista dei todo deve presentare
-  - titolo dell'attività da svolgere
-  - nome e profile picture dell'utente che ha creato il todo
-  - nome e profile picture dell'utente a cui è assegnato (se presente)
-  - duedate formattata correttamente (se presente)
-- Se un todo non è assegnato a una persona al posto del nome dell'assegnatario è presente un pulsante che apre una modale con la lista del utenti e permette di assegnarlo
-- Ogni todo cambia visualizzazione per evidenziare il fatto che è expired
-- Ogni todo cambia visualizzazione per evidenzare il fatto che è completato
-- Per ogni todo è presente una checkbox che, quando premuta, segna lo stato come completato o da completare (commuta a ogni click)
-
-### Indicazioni
-- Non vi preoccupate troppo dello stile, ma datemi almeno l'impressione di averci provato
-- Guardate bene la documentazione di [ng-bootstrap](https://ng-bootstrap.github.io/) e cercate componenti che vi possano essere utili
-- Guardate in particolare gli esempi e cercate di capire dalle api della libreria se ci sono delle configurazioni da applicare per ottenere i risultati che desiderate
-- Suddividete quanto più possibile in componenti, se un comportamento si ripete fare in modo di avere qualcosa di riutilizzabile
-- Non abbiate paura di fare copia incolla dal codice scritto a lezione, possibilmente prima accertatevi di averlo capito. Diverso è fare copia incolla da un compagno, non è apprezzato.
