@@ -28,11 +28,17 @@ export class TransactionService {
     async add(transaction: Transaction): Promise<Transaction> {
         const lastTransaction = await this.findLastTrans(transaction.bankAccount);
         const category = await categoryService.typeCategory(transaction.category);
-        const currentBalance = lastTransaction.balance! += transaction.amount; 
-        if(category.type === 'Uscita' && currentBalance < 0) {
+        let balance = 0;
+        if(category.type === 'Uscita') {
+            balance = lastTransaction.balance! -= transaction.amount;
+        }
+        if(category.type === 'Entrata') {
+            balance = lastTransaction.balance! += transaction.amount;
+        }
+        if(balance < 0) {
             throw new InsufficientBalance();
         }
-        const newTransaction = await TransactionModel.create({ ...transaction, balance: currentBalance });
+        const newTransaction = await TransactionModel.create({ ...transaction, balance });
         await newTransaction.populate('bankAccount category');
         return newTransaction;
     }
