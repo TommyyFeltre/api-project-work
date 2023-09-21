@@ -5,9 +5,9 @@ import { BankAccount } from "../bank-account/bank-account.entity";
 export interface Transaction {
     id?: string;
     bankAccount: Types.ObjectId | string | BankAccount;
-    balance: number;
+    balance?: number;
     date?: Date;
     amount: number;
-    category: Types.ObjectId | string | Category;
+    category: Category | Types.ObjectId | string;
     description: string;
 }
