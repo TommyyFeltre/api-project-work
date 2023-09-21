@@ -7,7 +7,6 @@ export interface Account{
     id?: string;
     creationDate: Date;
     iban: string;
-    balance: number;
     user: Types.ObjectId | string | User;
 
 }

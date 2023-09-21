@@ -1,7 +1,7 @@
-import  mongoose, { Schema } from 'mongoose';
-import { Transactions } from './transactions.entity';
+import  mongoose, { Schema, model } from 'mongoose';
+import { Transactions as iTransactions } from './transactions.entity';
 
-export const transactionsSchema = new mongoose.Schema<Transactions>({     
+export const transactionsSchema = new mongoose.Schema<iTransactions>({     
     Id: String,
     date: Date,
     amount: Number,
@@ -29,3 +29,4 @@ transactionsSchema.set('toObject', {
     return ret;
   }
 });
+export const Transactions = model<iTransactions>('Transactions', transactionsSchema);

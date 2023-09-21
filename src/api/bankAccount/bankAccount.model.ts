@@ -5,7 +5,6 @@ export const accountSchema = new mongoose.Schema<iAccount>({
     id: String,
     creationDate: Date,
     iban: String,
-    balance: Number,
     user: {type : Schema.Types.ObjectId, ref: "User"},
   });
 

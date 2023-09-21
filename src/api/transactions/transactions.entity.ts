@@ -3,7 +3,7 @@ import { CategoryMovement } from "../categoryMovement/categoryMovement.entity";
 import { Account } from "../bankAccount/bankAccount.entity";
 
 export interface Transactions{
-    Id: string;
+    Id?: string;
     date: Date;
     amount: number;
     balance: number;

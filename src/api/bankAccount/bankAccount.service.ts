@@ -1,5 +1,5 @@
 import { User } from "../user/user.entity";
-import { Account } from "./bankAccount.model";
+import { Account, accountSchema } from "./bankAccount.model";
 
 
 export class bankAccountService{
@@ -13,8 +13,8 @@ export class bankAccountService{
         const IBAN = this.IBANCreator();
 
        const newAccount = await Account.create({ creationDate: creationDate, iban: IBAN, balance: initialBalance, user: user })
-
-       return IBAN;
+       await newAccount.populate("category, bankAccountId");
+       return newAccount;
     }
 
     async getById(id: string){
@@ -36,7 +36,11 @@ export class bankAccountService{
             const op = randomNum;
             randomNum = "0"+op;
         }
-        return "IT"+randomCinNum+randomletter+ABI+CAB+randomNum;
+        const res = "IT"+randomCinNum+randomletter+ABI+CAB+randomNum;
+
+        const existingIBAN = await Account.findOne({'iban': res});
+
+        return res;
     }
 
 

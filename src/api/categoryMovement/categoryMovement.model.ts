@@ -1,8 +1,8 @@
-import  mongoose from 'mongoose';
+import  mongoose, { model } from 'mongoose';
 import { CategoryMovement } from "./categoryMovement.entity"
 
 export const movementSchema = new mongoose.Schema<CategoryMovement>({
-    CategoryMovementId: String,
+    id: String,
     CategoryName: String,
     Tipology: String
   });
@@ -25,3 +25,4 @@ movementSchema.set('toObject', {
     return ret;
   }
 });
+export const Movements = model<CategoryMovement>('CategoryMovement', movementSchema);

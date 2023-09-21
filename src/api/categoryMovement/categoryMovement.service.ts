@@ -9,4 +9,4 @@ export class MovementService {
 
 
 
-}
+}export default new MovementService();

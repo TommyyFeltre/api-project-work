@@ -1,5 +1,5 @@
 export interface CategoryMovement {
-    CategoryMovementId: string;
+    id?: string;
     CategoryName: string;
     Tipology: string;
 }
