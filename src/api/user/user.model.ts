@@ -4,7 +4,8 @@ import { User as iUser} from './user.entity';
 export const userSchema = new mongoose.Schema<iUser>({
   firstName: String,
   lastName: String,
-  picture: String
+  iban: String,
+  creationDate: {type: Date, default: new Date()}
 });
 
 userSchema.virtual('fullName').get(function() {

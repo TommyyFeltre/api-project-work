@@ -7,20 +7,20 @@ export class AddUserDTO {
   @IsString()
   lastName: string;
 
-  @IsUrl()
-  picture: string;
-
   @IsEmail()
   username: string;
 
   @MinLength(8)
   @Matches(
-    new RegExp('((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$'),
+    new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])(?=.*[^\w\d\s]).{8,}$'),
     {
-      message: 'password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number or special character'
+      message: 'password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character'
     }
   )
   password: string;
+
+  @IsString()
+  iban: string;
 }
 
 export class LoginDTO {
