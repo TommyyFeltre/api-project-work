@@ -42,6 +42,11 @@ export class TransactionService {
         await newTransaction.populate('bankAccount category');
         return newTransaction;
     }
+
+    async findByNumber(record: number, bankAccount: string):Promise<Transaction[]> {
+        const transactions = await TransactionModel.find({ bankAccount })
+        return transactions;
+    }       
 }
 
 export default new TransactionService();
