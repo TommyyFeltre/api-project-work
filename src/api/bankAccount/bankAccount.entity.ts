@@ -4,10 +4,10 @@ import { User } from "../user/user.entity";
 
 export interface Account{
 
-    bankAccountId: string;
-    creationData: Date;
+    id?: string;
+    creationDate: Date;
     iban: string;
-    movements: Types.ObjectId | string | CategoryMovement; 
+    balance: number;
     user: Types.ObjectId | string | User;
 
 }

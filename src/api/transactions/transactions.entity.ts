@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { CategoryMovement } from "../categoryMovement/categoryMovement.entity";
 import { Account } from "../bankAccount/bankAccount.entity";
 
-export interface Movements{
+export interface Transactions{
     Id: string;
     date: Date;
     amount: number;

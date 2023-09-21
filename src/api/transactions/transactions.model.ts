@@ -1,7 +1,7 @@
 import  mongoose, { Schema } from 'mongoose';
-import { Movements } from './movements.entity';
+import { Transactions } from './transactions.entity';
 
-export const movementsSchema = new mongoose.Schema<Movements>({     
+export const transactionsSchema = new mongoose.Schema<Transactions>({     
     Id: String,
     date: Date,
     amount: Number,
@@ -12,7 +12,7 @@ export const movementsSchema = new mongoose.Schema<Movements>({
   });
 
 
-movementsSchema.set('toJSON', {
+  transactionsSchema.set('toJSON', {
   virtuals: true,
   transform: (_, ret) => {
     delete ret._id;
@@ -21,7 +21,7 @@ movementsSchema.set('toJSON', {
   }
 });
 
-movementsSchema.set('toObject', {
+transactionsSchema.set('toObject', {
   virtuals: true,
   transform: (_, ret) => {
     delete ret._id;
