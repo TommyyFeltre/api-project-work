@@ -21,7 +21,7 @@ export const addRegister = async (
             category,
             description
         }
-        const transaction = await transactionService.add(newTransaction);
+        const transaction = await transactionService.addInit(newTransaction);
         res.json(transaction);
     } catch(err) {
         next(err);
