@@ -19,3 +19,11 @@ export class AddTransactionDTO {
     description: string;
     
 }
+
+export class AddTransactionRegDTO {
+    @IsExistsInModel(BankAccount)
+    bankAccount: string;
+
+    @IsExistsInModel(CategoryModel)
+    category: string;
+}

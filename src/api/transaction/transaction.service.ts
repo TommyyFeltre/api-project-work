@@ -3,11 +3,10 @@ import { Transaction as TransactionModel } from "./transaction.model";
 
 export class TransactionService {
     async add(transaction: Transaction) {
-        const newTransaction = await TransactionModel.create({ ...transaction })
-        return ;
+        const newTransaction = await TransactionModel.create({ ...transaction });
+        await newTransaction.populate('bankAccount category');
+        return newTransaction;
     }
-
-    // private async findSaldo() {
-    //     const list = await 
-    // }
 }
+
+export default new TransactionService();

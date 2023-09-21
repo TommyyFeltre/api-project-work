@@ -3,7 +3,7 @@ import { Transaction as iTransaction } from "./transaction.entity";
 
 const TransactionSchema = new Schema<iTransaction>({
     bankAccount: {type: Schema.Types.ObjectId, ref: 'BankAccount'},
-    date: {type: Schema.Types.Date, default: Date.now()},
+    date: {type: Schema.Types.Date, default: new Date()},
     balance: Number,
     amount: Number,
     category: {type: Schema.Types.ObjectId, ref: 'Category'},

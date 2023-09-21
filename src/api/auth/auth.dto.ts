@@ -22,8 +22,8 @@ export class AddUserDTO {
 
 export class LoginDTO {
   @IsString()
-  username: String;
+  username: string;
 
   @IsString()
-  passowrd: string;
+  password: string;
 }
