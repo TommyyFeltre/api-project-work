@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsUrl, Matches, MinLength } from "class-validator";
+import { IsEmail, IsString, Matches, MinLength } from "class-validator";
 
 export class AddUserDTO {
   @IsString()
@@ -18,9 +18,6 @@ export class AddUserDTO {
     }
   )
   password: string;
-
-  @IsString()
-  iban: string;
 }
 
 export class LoginDTO {
