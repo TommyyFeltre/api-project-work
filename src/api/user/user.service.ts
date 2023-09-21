@@ -8,6 +8,7 @@ export class UserService {
 
   async add(user: User, credentials: {username: string, password: string}): Promise<User> {
     const existingIdentity = await UserIdentityModel.findOne({'credentials.username': credentials.username});
+    console.log('username: ' + credentials.username);
     if (existingIdentity) {
       throw new UserExistsError();
     }
