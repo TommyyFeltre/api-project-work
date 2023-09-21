@@ -43,10 +43,19 @@ export class TransactionService {
         return newTransaction;
     }
 
-    async findByNumber(record: number, bankAccount: string):Promise<Transaction[]> {
+    async findByNumber(record: number, bankAccount: string): Promise<Transaction[]> {
         const transactions = await TransactionModel.find({ bankAccount })
+            .sort({ date: -1 })
+            .limit(record)
         return transactions;
-    }       
+    }      
+    
+    async findByNumberCategory(record: number, bankAccount: string, category: string): Promise<Transaction[]> {
+        const transactions = await TransactionModel.find({ bankAccount, category })
+            .sort({ date: -1 })
+            .limit(record)
+        return transactions;
+    }
 }
 
 export default new TransactionService();
