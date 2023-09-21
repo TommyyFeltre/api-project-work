@@ -5,7 +5,6 @@ export const movementsSchema = new mongoose.Schema<Movements>({
     Id: String,
     date: Date,
     amount: Number,
-    balance: Number,
     description: String,
     category: {type : Schema.Types.ObjectId, ref: "categoryMovement"}, 
     bankAccountId: {type : Schema.Types.ObjectId, ref: "Account"} 

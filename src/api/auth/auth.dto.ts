@@ -18,9 +18,6 @@ export class AddUserDTO {
     }
   )
   password: string;
-
-  @IsString()
-  iban: string;
 }
 
 export class LoginDTO {

@@ -6,6 +6,7 @@ import { UserExistsError } from "../../errors/user-exists";
 import userService from '../user/user.service';
 import passport from "passport";
 import * as jwt from 'jsonwebtoken';
+import bankAccountService from "../bankAccount/bankAccount.service";
 
 const JWT_SECRET = 'my_jwt_secret';
 
@@ -18,7 +19,9 @@ export const add = async (
     const userData = omit(req.body, 'username', 'password');
     const credentials = pick(req.body, 'username', 'password');
     const newUser = await userService.add(userData, credentials);
-    res.send(newUser);
+    const newAccount = await bankAccountService.add(newUser)
+    console.log(newAccount);
+    res.send(newAccount);
     
   } catch (err) {
     if (err instanceof UserExistsError) {

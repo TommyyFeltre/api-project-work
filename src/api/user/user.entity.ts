@@ -3,6 +3,4 @@ export interface User {
     firstName: string;
     lastName: string;
     fullName?: string;
-    iban: string;
-    creationDate?: Date;
 }
