@@ -1,7 +1,5 @@
-import { assign } from 'lodash';
-import { NotFoundError } from '../../errors/not-found';
-import { BankAccount } from './bankAccount.entity';
-import { BankAccounts as BanckAccountModel } from './bankAccount.model';
+import { BankAccount } from './bank-account.entity';
+import { BankAccount as BanckAccountModel } from './bank-account.model';
 import { User } from '../user/user.entity';
 
 export class BankAccountService {
