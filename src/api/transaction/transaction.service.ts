@@ -47,6 +47,7 @@ export class TransactionService {
         const transactions = await TransactionModel.find({ bankAccount })
             .sort({ date: -1 })
             .limit(record)
+            .populate('bankAccount category')
         return transactions;
     }      
     
@@ -54,7 +55,31 @@ export class TransactionService {
         const transactions = await TransactionModel.find({ bankAccount, category })
             .sort({ date: -1 })
             .limit(record)
+            .populate('bankAccount category')
         return transactions;
+    }
+
+    async phoneTopUp(transaction: Transaction): Promise<Transaction> {
+        const lastTransaction = await this.findLastTrans(transaction.bankAccount);
+        const balance = lastTransaction.balance! -= transaction.amount;
+        if(balance < 0 ) {
+            throw new InsufficientBalance();
+        } 
+
+        const newTransaction = await TransactionModel.create({ ...transaction, balance })
+        await newTransaction.populate('bankAccount category');
+        return newTransaction;
+    } 
+
+    async bankTransfer(transaction: Transaction): Promise<Transaction> {
+        const lastTransaction = await this.findLastTrans(transaction.bankAccount);
+        const balance = lastTransaction.balance! -= transaction.amount;
+        if(balance < 0) {
+            throw new InsufficientBalance();
+        }
+        const newTransaction = await TransactionModel.create({ ...transaction, balance })
+        await newTransaction.populate('bankAccount category');
+        return newTransaction;
     }
 }
 

@@ -17,6 +17,16 @@ export class  CategoryService {
             throw new NotFoundError();
         }
     }
+
+    async phoneTopUp(): Promise<string> {
+        const categoryPhoneId =  await CategoryModel.findOne({ name: 'Ricarica' });
+        return categoryPhoneId?.id;
+    }
+
+    async bankTransfer(): Promise<string> {
+        const categoryTransfer = await CategoryModel.findOne({ name: 'Bonifico Uscita' });
+        return categoryTransfer?.id;
+    }
 }
 
 export default new CategoryService();

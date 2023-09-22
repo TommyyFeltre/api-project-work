@@ -8,6 +8,5 @@ const router = Router();
 
 router.use(isAuthenticated);
 router.post('', validate(AddCategoryDTO), add);
-router.post('/id', find);
 
 export default router;
