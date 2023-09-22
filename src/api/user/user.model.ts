@@ -28,4 +28,4 @@ userSchema.set('toObject', {
   }
 });
 
-export const User = mongoose.model<iUser>('User', userSchema);
+export const User = mongoose.model<iUser>('Users', userSchema);

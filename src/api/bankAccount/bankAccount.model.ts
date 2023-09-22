@@ -1,11 +1,12 @@
 import  mongoose, { Schema, model } from 'mongoose';
 import { Account as iAccount } from "./bankAccount.entity"
+import { User } from '../user/user.model';
 
 export const accountSchema = new mongoose.Schema<iAccount>({
     id: String,
     creationDate: Date,
     iban: String,
-    user: {type : Schema.Types.ObjectId, ref: "User"},
+    user: {type : Schema.Types.ObjectId, ref: User}
   });
 
 
@@ -28,4 +29,4 @@ accountSchema.set('toObject', {
 });
 
 
-export const Account = model<iAccount>('User', accountSchema);
+export const Account = mongoose.model<iAccount>('bankAccounts', accountSchema);

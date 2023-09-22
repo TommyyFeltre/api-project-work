@@ -1,14 +1,16 @@
-import  mongoose, { model } from 'mongoose';
-import { CategoryMovement } from "./categoryMovement.entity"
-
-export const movementSchema = new mongoose.Schema<CategoryMovement>({
-    id: String,
-    CategoryName: String,
-    Tipology: String
-  });
+import  mongoose, { Schema, model } from 'mongoose';
+import { CategoryMovement as iCategoryMovement } from "./categoryMovement.entity"
 
 
-movementSchema.set('toJSON', {
+export const categoryMovementSchema = new Schema<iCategoryMovement>({
+  id:  String,
+  CategoryName: String,
+  Tipology: String
+});
+
+
+
+categoryMovementSchema.set('toJSON', {
   virtuals: true,
   transform: (_, ret) => {
     delete ret._id;
@@ -17,7 +19,7 @@ movementSchema.set('toJSON', {
   }
 });
 
-movementSchema.set('toObject', {
+categoryMovementSchema.set('toObject', {
   virtuals: true,
   transform: (_, ret) => {
     delete ret._id;
@@ -25,4 +27,7 @@ movementSchema.set('toObject', {
     return ret;
   }
 });
-export const Movements = model<CategoryMovement>('CategoryMovement', movementSchema);
+
+export const CategoryMovement = model<iCategoryMovement>('Categories', categoryMovementSchema);
+
+

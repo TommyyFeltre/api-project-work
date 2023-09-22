@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import { TypedRequest } from "../../utils/typed-request.interface";
-import { AddUserDTO, LoginDTO } from "./auth.dto";
+import { AddUserDTO, LoginDTO, changePasswordDTO } from "./auth.dto";
 import { omit, pick } from 'lodash';
 import { UserExistsError } from "../../errors/user-exists";
 import userService from '../user/user.service';
@@ -54,4 +54,24 @@ export const login = async (
       token
     });
   })(req, res, next);
+}
+
+export const changePassword = async (
+  req: TypedRequest<changePasswordDTO>,
+  res: Response,
+  next: NextFunction  
+) => {try {
+  const userData = omit(req.body, 'username', 'password');
+  const credentials = pick(req.body, 'username', 'password');
+  const newPassword = await userService.changePassword(credentials);
+  res.send(newPassword);
+  
+} catch (err) {
+  if (err instanceof UserExistsError) {
+    res.status(400);
+    res.send(err.message);
+  } else {
+    next(err);
+  }
+}
 }

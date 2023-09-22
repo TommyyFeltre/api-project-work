@@ -9,19 +9,11 @@ export const myAccount = async(
     next: NextFunction
   ) => {
 
-    const id = req.params.accountId;
+    const idAcc = req.body.id;
 
-    const currentAccount = await bankAccountService.getById(id!)
+    const currentAccount = await bankAccountService.getById(idAcc!)
 
     res.json(currentAccount);
   }
 
-/* export const add = async(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    
 
-
-} */

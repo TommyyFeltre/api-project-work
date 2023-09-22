@@ -9,5 +9,5 @@ export interface Transactions{
     balance: number;
     description: string;
     category: Types.ObjectId | string | CategoryMovement; 
-    bankAccountId: Types.ObjectId | string | Account; 
+    bankAccount: Types.ObjectId | string | Account; 
 }
