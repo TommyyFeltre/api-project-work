@@ -94,7 +94,7 @@ export const resetPassword = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!;
     const { oldPassword, newPassword } = req.body;
 
     if (oldPassword === newPassword) {
@@ -109,7 +109,7 @@ export const resetPassword = async (
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const modifiedUser = await userService.update(userId!, newPassword, oldPassword);
+    const modifiedUser = await userService.update(userId.id!, newPassword, oldPassword);
 
 
     res.status(200);
