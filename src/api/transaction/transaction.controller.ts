@@ -65,7 +65,7 @@ export const listByNumber = async (
 ) => {
     try {
         const { bankAccount, record } = req.body;
-        const list = await transactionService.findByNumber(record, bankAccount);
+        const list = await transactionService.findByNumber(bankAccount, record);
         res.json(list);
     } catch(err) {
         next(err);
