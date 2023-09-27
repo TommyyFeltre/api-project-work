@@ -1,11 +1,19 @@
 import { NextFunction, Response } from "express";
 import { TypedRequest } from "../../utils/typed-request.interface";
-import { AddUserDTO, LoginDTO, changePasswordDTO } from "./auth.dto";
+import { AddUserDTO, LoginDTO, ResetPasswordDTO, changePasswordDTO } from "./auth.dto";
+
 import { omit, pick } from 'lodash';
 import { UserExistsError } from "../../errors/user-exists";
 import userService from '../user/user.service';
 import passport from "passport";
 import * as jwt from 'jsonwebtoken';
+import bankAccountService from "../bank-account/bank-account.service";
+import { Strategy as LocalStrategy } from "passport-local";
+import { UserIdentity } from "../../utils/auth/local/user-identity.model";
+import * as bcrypt from 'bcrypt';
+import { User as UserModel } from "../user/user.model";
+import { WrongPasswordError } from "../../errors/wrong-password";
+
 
 const JWT_SECRET = 'my_jwt_secret';
 
@@ -18,7 +26,8 @@ export const add = async (
     const userData = omit(req.body, 'username', 'password');
     const credentials = pick(req.body, 'username', 'password');
     const newUser = await userService.add(userData, credentials);
-    res.send(newUser);
+    const newAccount = await bankAccountService.add(newUser);
+    res.send(newAccount);
     
   } catch (err) {
     if (err instanceof UserExistsError) {
@@ -39,6 +48,7 @@ export const login = async (
     if (err) {
       return next(err);
     }
+    console.log(user)
     if (!user) {
       res.status(401);
       res.json({
@@ -78,3 +88,42 @@ export const changePassword = async (
 }
 
 
+export const resetPassword = async (
+  req: TypedRequest<ResetPasswordDTO>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user!.id;
+    const { oldPassword, newPassword } = req.body;
+
+    if (oldPassword === newPassword) {
+      res.status(400);
+      res.json({
+        error: 'PasswordValidationError',
+        message: 'New password must be different from the last one',
+      });
+      return;
+    }
+    if (!req.user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const modifiedUser = await userService.update(userId!, newPassword, oldPassword);
+
+
+    res.status(200);
+    res.json({
+      modifiedUser,
+      message: 'Password changed'
+    });
+  } catch (err) {
+    if (err instanceof WrongPasswordError) {
+      res.status(400);
+      res.send(err.message);
+    } else {
+      next(err);
+    }
+  }
+    
+}

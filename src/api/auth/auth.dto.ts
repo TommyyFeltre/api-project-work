@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsUrl, Matches, MinLength } from "class-validator";
+import { IsEmail, IsString, Matches, MinLength } from "class-validator";
 
 export class AddUserDTO {
   @IsString()
@@ -7,17 +7,14 @@ export class AddUserDTO {
   @IsString()
   lastName: string;
 
-  @IsUrl()
-  picture: string;
-
   @IsEmail()
   username: string;
 
   @MinLength(8)
   @Matches(
-    new RegExp('((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$'),
+    new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])(?=.*[^\w\d\s]).{8,}$'),
     {
-      message: 'password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number or special character'
+      message: 'password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character'
     }
   )
   password: string;
@@ -25,7 +22,7 @@ export class AddUserDTO {
 
 export class LoginDTO {
   @IsString()
-  username: String;
+  username: string;
 
   @IsString()
   password: string;
@@ -49,6 +46,19 @@ export class changePasswordDTO {
     new RegExp('((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$'),
     {
       message: 'password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number or special character'
+    }
+  )
+  newPassword: string;
+}
+export class ResetPasswordDTO {
+  @IsString()
+  oldPassword: string;
+
+  @MinLength(8)
+  @Matches(
+    new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])(?=.*[^\w\d\s]).{8,}$'),
+    {
+      message: 'password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character'
     }
   )
   newPassword: string;

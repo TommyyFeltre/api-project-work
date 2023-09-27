@@ -1,11 +1,13 @@
 import { Router } from 'express';
-import TransactionRouter from './transactions/transactions.router';
-import BankAccountRouter from './bankAccount/bankAccount.router';
+import authRouter from './auth/auth.router';
+import userRouter from './user/user.router';
 
 const router = Router();
-router.use("/transaction", TransactionRouter);
-router.use("/account", BankAccountRouter);
-router.use("/user", BankAccountRouter);
+
+
+
+router.use(authRouter);
+router.use(userRouter);
 
 export default router;
 
