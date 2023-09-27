@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const LOCAL_DB = 'mongodb://127.0.0.1:27017/project-work';
 
 mongoose.set('debug', true);
-mongoose.connect(LOCAL_DB)
+mongoose.connect(process.env.DB_URI!)
   .then(_ => {
     console.log('Connected to db');
     app.listen(PORT, () => {

@@ -12,6 +12,8 @@ import { UserIdentity } from "../../utils/auth/local/user-identity.model";
 import * as bcrypt from 'bcrypt';
 import { User as UserModel } from "../user/user.model";
 import { WrongPasswordError } from "../../errors/wrong-password";
+import transactionService from "../transaction/transaction.service";
+import { Transaction } from "../transaction/transaction.entity";
 
 
 const JWT_SECRET = 'my_jwt_secret';
@@ -26,6 +28,14 @@ export const add = async (
     const credentials = pick(req.body, 'username', 'password');
     const newUser = await userService.add(userData, credentials);
     const newAccount = await bankAccountService.add(newUser);
+    const newTransaction: Transaction = {
+      bankAccount: newAccount.id!,
+      balance: 0,
+      amount: 0,
+      category: '650c36b34fbb7705e5fe4fcf',
+      description: 'Creazione account avvenuta con successo'
+  }
+    await transactionService.addInit(newTransaction);
     res.send(newAccount);
     
   } catch (err) {

@@ -45,13 +45,8 @@ export class UserService {
       // Hash the new password
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-  
       identity!.credentials.hashedPassword = hashedPassword;
       await identity!.save();
-      // await UserIdentityModel.updateOne(
-      //   { $set: { credentials: credential } }
-      // );
-      // assign(identity, credential);
       
       const updatedUser = await UserIdentityModel.findOne({user: userId});
 
