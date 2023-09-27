@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsIn, IsNumber, IsPhoneNumber, IsString, Min, isPhoneNumber, min } from "class-validator";
+import { IsIn, IsNumber, IsOptional, IsPhoneNumber, IsString, Min, isPhoneNumber, min } from "class-validator";
 import { IsExistsInModel } from "../../utils/checkIfExists.validator";
 import { BankAccount as BankAccountModel } from "../bank-account/bank-account.model";
 import { Category as CategoryModel } from "../category/category.model";
@@ -37,6 +37,7 @@ export class FindTransByNumDTO {
     @IsNumber()
     @Type(() => Number)
     @Min(1)
+    @IsOptional()
     record: number;
 }
 
