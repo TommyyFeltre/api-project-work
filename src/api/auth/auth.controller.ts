@@ -63,8 +63,8 @@ export const changePassword = async (
 ) => {try {
   const userData = omit(req.body, 'username', 'password');
   const credentials = pick(req.body, 'username', 'password');
-  const newPassword = await userService.changePassword(credentials);
-  res.send(newPassword);
+  //const newPassword = await userService.changePassword();
+  //res.send(newPassword);
   
 } catch (err) {
   if (err instanceof UserExistsError) {
@@ -74,4 +74,7 @@ export const changePassword = async (
     next(err);
   }
 }
+
 }
+
+

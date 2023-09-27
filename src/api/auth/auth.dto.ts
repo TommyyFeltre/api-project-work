@@ -42,5 +42,14 @@ export class changePasswordDTO {
       message: 'password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number or special character'
     }
   )
-  password: string;
+  oldPassword: string;
+  
+  @MinLength(8)
+  @Matches(
+    new RegExp('((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$'),
+    {
+      message: 'password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number or special character'
+    }
+  )
+  newPassword: string;
 }

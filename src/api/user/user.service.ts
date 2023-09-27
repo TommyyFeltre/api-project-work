@@ -5,6 +5,7 @@ import { UserExistsError } from "../../errors/user-exists";
 import * as bcrypt from 'bcrypt';
 import { assign } from "lodash";
 import { NotFoundError } from "../../errors/not-found";
+import { UserIdentity } from "../../utils/auth/local/user-identity.model";
 
 export class UserService {
 
@@ -45,6 +46,10 @@ export class UserService {
 
     return UserModel.findOne({_id: id}).populate("createdBy assignedTo");
 }
+
+
+
+
 
 }
 

@@ -45,8 +45,7 @@ export class TransactionService{
             $lt: lastDate
         }}).populate("category bankAccount", {
             balance: false,
-          }).limit(numMov).sort({ date: -1 }).select("-balance");;
-        
+          }).limit(numMov).sort({ date: -1 }).select("-balance");
         return movementsByPeriod;
     }
 
