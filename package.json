@@ -1,10 +1,11 @@
 {
-  "name": "sim-express",
+  "name": "project-work",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "build": "npx tsc",
     "dev": "nodemon",
     "gendata": "ts-node example-data.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
