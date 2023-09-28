@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { TypedRequest } from "../../utils/typed-request.interface";
-import { AddTransactionDTO, AddTransactionRegDTO, BankTransferDTO, FindTransByNumCatDTO, FindTransByNumDTO, phoneTopUpDTO } from "./transaction.dto";
+import { AddTransactionDTO, AddTransactionRegDTO, BankTransferDTO, FindTransByNumCatDTO, phoneTopUpDTO } from "./transaction.dto";
 import { Transaction } from "./transaction.entity";
 import transactionService from "./transaction.service";
 import { InsufficientBalance } from "../../errors/insufficient balance";
@@ -59,28 +59,14 @@ export const add =async (
     }
 }
 
-export const listByNumber = async (
-    req: TypedRequest<FindTransByNumDTO>,
-    res: Response,
-    next: NextFunction
-) => {
-    try {
-        const { bankAccount, record } = req.body;
-        const list = await transactionService.findByNumber(bankAccount, record);
-        res.json(list);
-    } catch(err) {
-        next(err);
-    }
-}
-
-export const listByNumCategory = async (
+export const list = async (
     req: TypedRequest<FindTransByNumCatDTO>,
     res: Response,
     next: NextFunction
 ) => {
     try {
-        const { bankAccount, record, category } = req.body;
-        const list = await transactionService.findByNumberCategory(bankAccount, record, category);
+        const { bankAccount, record, category, firstDate, secondDate } = req.body;
+        const list = await transactionService.find(bankAccount, record, category, firstDate, secondDate);
         res.json(list);
     } catch(err) {
         next(err);
@@ -142,7 +128,7 @@ export const bankTransfer = async (
             ip
         }
         res.json(response);
-        await ipAddressService.add(req.ip, "Bpnifico accettato");
+        await ipAddressService.add(req.ip, "Bonifico accettato");
     } catch(err) {
         if(err instanceof InsufficientBalance) {
             res.json({

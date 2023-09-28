@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsIn, IsNumber, IsOptional, IsPhoneNumber, IsString, Min, isPhoneNumber, min } from "class-validator";
+import { IsDate, IsIn, IsNumber, IsOptional, IsPhoneNumber, IsString, Min, isPhoneNumber, min } from "class-validator";
 import { IsExistsInModel } from "../../utils/checkIfExists.validator";
 import { BankAccount as BankAccountModel } from "../bank-account/bank-account.model";
 import { Category as CategoryModel } from "../category/category.model";
@@ -30,7 +30,7 @@ export class AddTransactionRegDTO {
     category: string;
 }
 
-export class FindTransByNumDTO {
+export class FindTransByNumCatDTO {
     @IsExistsInModel(BankAccountModel)
     bankAccount: string;
 
@@ -39,19 +39,20 @@ export class FindTransByNumDTO {
     @Min(1)
     @IsOptional()
     record: number;
-}
-
-export class FindTransByNumCatDTO {
-    @IsExistsInModel(BankAccountModel)
-    bankAccount: string;
-
-    @IsNumber()
-    @Type(() => Number)
-    @Min(1)
-    record: number;
 
     @IsExistsInModel(CategoryModel)
+    @IsOptional()
     category: string;
+
+    @IsDate()
+    @Type(() => Date)
+    @IsOptional()
+    firstDate: Date;
+
+    @IsDate()
+    @Type(() => Date)
+    @IsOptional()
+    secondDate: Date;
 }
 
 export class phoneTopUpDTO {
