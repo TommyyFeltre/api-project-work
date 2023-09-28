@@ -79,7 +79,7 @@ export const listByNumCategory = async (
 ) => {
     try {
         const { bankAccount, record, category } = req.body;
-        const list = await transactionService.findByNumberCategory(record, bankAccount, category);
+        const list = await transactionService.findByNumberCategory(bankAccount, record, category);
         res.json(list);
     } catch(err) {
         next(err);

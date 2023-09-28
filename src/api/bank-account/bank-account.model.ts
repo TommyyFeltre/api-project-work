@@ -4,13 +4,13 @@ import IBANcreator from "../../utils/iban-creator";
 
 const _iban = IBANcreator();
 
-export const BanckAccountSchema = new mongoose.Schema<iBankAccount>({
+export const BankAccountSchema = new mongoose.Schema<iBankAccount>({
     creationDate: {type: Date, default: new Date()},
     iban: {type: Schema.Types.String, default: _iban},
     user: {type : Schema.Types.ObjectId, ref: 'User'},
   });
 
-  BanckAccountSchema.set('toJSON', {
+BankAccountSchema.set('toJSON', {
   virtuals: true,
   transform: (_, ret) => {
     delete ret._id;
@@ -19,5 +19,15 @@ export const BanckAccountSchema = new mongoose.Schema<iBankAccount>({
   }
 });
 
+BankAccountSchema.set('toObject', {
+  virtuals: true,
+  transform: (_, ret) => {
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+  }
+})
 
-export const BankAccount = mongoose.model<iBankAccount>('BankAccount', BanckAccountSchema);
+
+
+export const BankAccount = mongoose.model<iBankAccount>('BankAccount', BankAccountSchema);

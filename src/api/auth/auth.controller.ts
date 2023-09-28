@@ -24,7 +24,11 @@ export const add = async (
   next: NextFunction
 ) => {
   try {
-    const userData = omit(req.body, 'username', 'password');
+    const userData = omit(req.body, 'username', 'password', 'confPassword');
+    const { password, confPassword } = req.body;
+    if(password !== confPassword){
+      throw new WrongPasswordError();
+    }
     const credentials = pick(req.body, 'username', 'password');
     const newUser = await userService.add(userData, credentials);
     const newAccount = await bankAccountService.add(newUser);
