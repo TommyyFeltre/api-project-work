@@ -4,7 +4,7 @@ import app from './app';
 import mongoose from 'mongoose';
 require('dotenv').config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const LOCAL_DB = 'mongodb://127.0.0.1:27017/project-work';
 
 mongoose.set('debug', true);

@@ -5,6 +5,7 @@ import { Transaction } from "./transaction.entity";
 import transactionService from "./transaction.service";
 import { InsufficientBalance } from "../../errors/insufficient balance";
 import categoryService from "../category/category.service";
+import ipAddressService from "../ip-users/ip.service";
 
 export const addRegister = async (
     req: TypedRequest<AddTransactionRegDTO>,
@@ -103,14 +104,18 @@ export const phoneTopUp = async (
         }
         const transaction = await transactionService.phoneTopUp(newTransaction);
         res.json(transaction);
+        await ipAddressService.add(req.ip, "Ricarica accettata");
     } catch(err) {
         if(err instanceof InsufficientBalance) {
             res.json({
                 error: err.name,
                 message: err.message
             })
+            await ipAddressService.add(req.ip, "Ricarica rifiutata");
         } else {
+            await ipAddressService.add(req.ip, "Ricarica rifiutata");
             next(err);
+            
         }
     }
 }
@@ -137,13 +142,16 @@ export const bankTransfer = async (
             ip
         }
         res.json(response);
+        await ipAddressService.add(req.ip, "Bpnifico accettato");
     } catch(err) {
         if(err instanceof InsufficientBalance) {
             res.json({
                 error: err.name,
                 message: err.message
             })
+            await ipAddressService.add(req.ip, "Bonifico rifiutato");
         } else {
+            await ipAddressService.add(req.ip, "Bonifico rifiutato");
             next(err);
         }
     }

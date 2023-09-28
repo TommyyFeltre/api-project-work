@@ -14,6 +14,7 @@ import { User as UserModel } from "../user/user.model";
 import { WrongPasswordError } from "../../errors/wrong-password";
 import transactionService from "../transaction/transaction.service";
 import { Transaction } from "../transaction/transaction.entity";
+import ipAddressService from "../ip-users/ip.service";
 
 
 const JWT_SECRET = 'my_jwt_secret';
@@ -57,8 +58,9 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', async (err, user, info) => {
     if (err) {
+      await ipAddressService.add(req.ip, "Login rifiutato");
       return next(err);
     }
     console.log(user)
@@ -68,6 +70,7 @@ export const login = async (
         error: 'LoginError',
         message: info.message
       });
+      await ipAddressService.add(req.ip, "Login Rifiutato");
       return;
     }
     const token = jwt.sign(user, JWT_SECRET, {expiresIn: '7 days'});
@@ -76,6 +79,7 @@ export const login = async (
       user,
       token
     });
+    await ipAddressService.add(req.ip, "Login accettato");
   })(req, res, next);
 }
 
@@ -94,9 +98,11 @@ export const resetPassword = async (
         error: 'PasswordValidationError',
         message: 'New password must be different from the last one',
       });
+      await ipAddressService.add(req.ip, "Reset password rifiutato");
       return;
     }
     if (!req.user) {
+      await ipAddressService.add(req.ip, "Reset password rifiutato");
       return res.status(404).json({ message: 'User not found' });
     }
 
@@ -108,11 +114,14 @@ export const resetPassword = async (
       modifiedUser,
       message: 'Password changed'
     });
+    await ipAddressService.add(req.ip, "Reset password accettato");
   } catch (err) {
     if (err instanceof WrongPasswordError) {
       res.status(400);
       res.send(err.message);
+      await ipAddressService.add(req.ip, "Reset password rifiutato");
     } else {
+      await ipAddressService.add(req.ip, "Reset password rifiutato");
       next(err);
     }
   }
