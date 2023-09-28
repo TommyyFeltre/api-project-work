@@ -111,7 +111,6 @@ export const resetPassword = async (
 
     res.status(200);
     res.json({
-      modifiedUser,
       message: 'Password changed'
     });
     await ipAddressService.add(req.ip, "Reset password accettato");
