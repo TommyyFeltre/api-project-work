@@ -60,11 +60,32 @@ export class TransactionService {
         return transactions;
     }      
     
-    async findByNumberCategory(record: number, bankAccount: string, category: string): Promise<Transaction[]> {
-        const transactions = await TransactionModel.find({ bankAccount, category })
+    async findByNumberCategory(bankAccount: string, record?: number, category?: string): Promise<Transaction[]> {
+        if(!record && category){
+            const transactions = await TransactionModel.find({bankAccount, category})
+                .sort({ date: -1 })
+                .populate('bankAccount category')
+            return transactions;
+        }
+        if(record && !category){
+            const transactions = await TransactionModel.find({bankAccount})
+                .sort({ date: -1 })
+                .limit(record!)
+                .populate('bankAccount category')
+            return transactions;
+        }
+        if(record && category){
+            const transactions = await TransactionModel.find({ bankAccount, category })
+                .sort({ date: -1 })
+                .limit(record)
+                .populate('bankAccount category')
+            return transactions;
+        }
+
+        /* ritorna la lista completa*/
+        const transactions = await TransactionModel.find({ bankAccount })
             .sort({ date: -1 })
-            .limit(record)
-            .populate('bankAccount category')
+            .populate('bankAccount')
         return transactions;
     }
 

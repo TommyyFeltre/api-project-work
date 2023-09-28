@@ -10,6 +10,7 @@ const app = express();
 app.use(cors());
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
+app.set('trust proxy', true);
 
 app.use('/api', apiRouter);
 app.use(errorHandlers);

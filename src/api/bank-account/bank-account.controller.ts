@@ -6,9 +6,8 @@ export const account = async(
   res: Response,
   next: NextFunction
 ) => {
-  const _account = await BankAccountModel.findOne({user: req.user?.id!})
-  console.log(_account);
-  const account = _account?.toObject()
+  const account = await BankAccountModel.findOne({user: req.user?.id!}).populate('user')
+
 
   res.json(account);
 }
