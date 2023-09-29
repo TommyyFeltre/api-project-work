@@ -18,6 +18,15 @@ export class  CategoryService {
         }
     }
 
+    async listCategory(): Promise<Category[]> {
+        const typeExit = await CategoryModel.find();
+        if(typeExit) {
+            return typeExit;
+        } else {
+            throw new NotFoundError();
+        }
+    }
+
     async phoneTopUp(): Promise<string> {
         const categoryPhoneId =  await CategoryModel.findOne({ name: 'Ricarica' });
         return categoryPhoneId?.id;
