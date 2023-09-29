@@ -36,3 +36,16 @@ export const find = async (
         next(err);
     }
 }
+
+export const list = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {  
+    try {
+        const category = await categoryService.listCategory();
+        res.json(category);
+    } catch(err) {
+        next(err);
+    }
+}

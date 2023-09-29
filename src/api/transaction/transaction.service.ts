@@ -39,7 +39,7 @@ export class TransactionService {
       throw new InsufficientBalance();
     }
     const newTransaction = await TransactionModel.create({ ...transaction, balance });
-    await newTransaction.populate('bankAccount category');
+    await newTransaction.populate('bankAccount category balance');
     return newTransaction;
   }
 
