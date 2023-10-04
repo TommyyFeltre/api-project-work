@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { IpAddress as iIpAddress } from "./ip.entity";
 
 export const ipAddressSchema = new mongoose.Schema<iIpAddress>({
-    date: {type: Date, default: new Date()},
+    date: {type: Date, default: Date.now},
     ipAddress: String,
     result: String
   });
