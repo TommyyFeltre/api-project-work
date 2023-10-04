@@ -124,8 +124,7 @@ export const bankTransfer = async (
         }
         const transaction = await transactionService.bankTransfer(newTransaction);
         const response = {
-            transaction,
-            ip
+            transaction
         }
         res.json(response);
         await ipAddressService.add(req.ip, "Bonifico accettato");
