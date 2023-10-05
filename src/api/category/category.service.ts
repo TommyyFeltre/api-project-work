@@ -36,6 +36,10 @@ export class  CategoryService {
         const categoryTransfer = await CategoryModel.findOne({ name: 'Bonifico Uscita' });
         return categoryTransfer?.id;
     }
+    async bankTransferIn(): Promise<string> {
+        const categoryTransfer = await CategoryModel.findOne({ name: 'Bonifico Entrata' });
+        return categoryTransfer?.id;
+    }
 }
 
 export default new CategoryService();

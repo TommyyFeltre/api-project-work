@@ -1,5 +1,6 @@
 import { NextFunction, Response, Request } from "express";
 import { BankAccount as BankAccountModel } from "./bank-account.model";
+import bankAccountService from "./bank-account.service";
 
 export const account = async(
   req: Request,

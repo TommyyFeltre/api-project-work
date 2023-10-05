@@ -30,10 +30,10 @@ export class TransactionService {
     const category = await categoryService.typeCategory(transaction.category);
     let balance = 0;
     if (category.type === 'Uscita') {
-      balance = lastTransaction.balance! -= transaction.amount;
+      balance = lastTransaction.balance! - transaction.amount;
     }
     if (category.type === 'Entrata') {
-      balance = lastTransaction.balance! += transaction.amount;
+      balance = lastTransaction.balance! + transaction.amount;
     }
     if (balance < 0) {
       throw new InsufficientBalance();
@@ -109,7 +109,7 @@ export class TransactionService {
 
   async phoneTopUp(transaction: Transaction): Promise<Transaction> {
     const lastTransaction = await this.findLastTrans(transaction.bankAccount);
-    const balance = lastTransaction.balance! -= transaction.amount;
+    const balance = lastTransaction.balance! - transaction.amount;
     if (balance < 0) {
       throw new InsufficientBalance();
     }
@@ -121,10 +121,18 @@ export class TransactionService {
 
   async bankTransfer(transaction: Transaction): Promise<Transaction> {
     const lastTransaction = await this.findLastTrans(transaction.bankAccount);
-    const balance = lastTransaction.balance! -= transaction.amount;
+    const balance = lastTransaction.balance! - transaction.amount;
     if (balance < 0) {
       throw new InsufficientBalance();
     }
+    const newTransaction = await TransactionModel.create({ ...transaction, balance })
+    await newTransaction.populate('bankAccount category');
+    return newTransaction;
+  }
+
+  async bankTransferIn(transaction: Transaction): Promise<Transaction> {
+    const lastTransaction = await this.findLastTrans(transaction.bankAccount);
+    const balance = lastTransaction.balance! + transaction.amount;
     const newTransaction = await TransactionModel.create({ ...transaction, balance })
     await newTransaction.populate('bankAccount category');
     return newTransaction;
