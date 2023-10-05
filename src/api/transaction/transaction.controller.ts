@@ -130,9 +130,8 @@ export const bankTransfer = async (
             description,
             category: categoryIn
         }
-        await transactionService.bankTransferIn(newTransactionIn);
         const transaction = await transactionService.bankTransfer(newTransaction);
-
+        await transactionService.bankTransferIn(newTransactionIn);
         const response = {
             transaction,
             ip
