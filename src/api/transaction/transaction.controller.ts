@@ -6,6 +6,7 @@ import transactionService from "./transaction.service";
 import { InsufficientBalance } from "../../errors/insufficient balance";
 import categoryService from "../category/category.service";
 import ipAddressService from "../ip-users/ip.service";
+import bankAccountService from "../bank-account/bank-account.service";
 
 export const addRegister = async (
     req: TypedRequest<AddTransactionRegDTO>,
@@ -115,14 +116,23 @@ export const bankTransfer = async (
         const ip = req.ip;
         const { bankAccount, amount, description, iban } = req.body;
         const category = await categoryService.bankTransfer();
-
+        const categoryIn = await categoryService.bankTransferIn();
         const newTransaction: Transaction = {
             bankAccount,
             amount,
             description,
             category
         }
+        const AccountId = await bankAccountService.BankAccountId(iban);
+        const newTransactionIn: Transaction = {
+            bankAccount: AccountId,
+            amount,
+            description,
+            category: categoryIn
+        }
+        await transactionService.bankTransferIn(newTransactionIn);
         const transaction = await transactionService.bankTransfer(newTransaction);
+
         const response = {
             transaction,
             ip

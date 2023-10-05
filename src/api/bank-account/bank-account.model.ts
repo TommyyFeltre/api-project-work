@@ -5,7 +5,7 @@ import IBANcreator from "../../utils/iban-creator";
 const _iban = IBANcreator();
 
 export const BankAccountSchema = new mongoose.Schema<iBankAccount>({
-    creationDate: {type: Date, default: new Date()},
+    creationDate: {type: Date, default: Date.now},
     iban: {type: Schema.Types.String, default: _iban},
     user: {type : Schema.Types.ObjectId, ref: 'User'},
   });

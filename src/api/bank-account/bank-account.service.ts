@@ -9,6 +9,11 @@ export class BankAccountService {
     await newItem.populate('user');
     return newItem;
   }
+
+  async BankAccountId(iban: string): Promise<string> {
+    const bankAccount = await BanckAccountModel.findOne({ iban });
+    return bankAccount?.id;
+  }
 }
 
 export default new BankAccountService();
