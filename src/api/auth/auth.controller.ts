@@ -46,7 +46,7 @@ export const add = async (
   } catch (err) {
     if (err instanceof UserExistsError) {
       res.status(400);
-      res.send(err.message);
+      res.json(err.message);
     } else {
       next(err);
     }
@@ -117,7 +117,11 @@ export const resetPassword = async (
   } catch (err) {
     if (err instanceof WrongPasswordError) {
       res.status(400);
-      res.send(err.message);
+      // res.send(err.message);
+      res.json({
+        error: 'PasswordValidationError',
+        message: 'Password errata',
+      });
       await ipAddressService.add(req.ip, "Reset password rifiutato");
     } else {
       await ipAddressService.add(req.ip, "Reset password rifiutato");
